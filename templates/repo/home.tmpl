@@ -141,6 +141,10 @@
 				{{end}}
 			</div>
 		</div>
+		{{if .CAP}}
+			{{template "repo/cap_summary" .}}
+		{{end}}
+		
 		{{if .IsViewFile}}
 			{{template "repo/view_file" .}}
 		{{else if .IsBlame}}

@@ -27,7 +27,11 @@ import (
 	"code.gitea.io/gitea/modules/log"
 	"code.gitea.io/gitea/modules/markup"
 	"code.gitea.io/gitea/modules/setting"
+
+	"github.com/go-git/go-git/v5/plumbing"
+	"encoding/json"
 )
+
 
 const (
 	tplRepoEMPTY base.TplName = "repo/empty"
@@ -124,6 +128,7 @@ func getReadmeFileFromPath(commit *git.Commit, treePath string) (*namedBlob, err
 }
 
 func renderDirectory(ctx *context.Context, treeLink string) {
+	
 	tree, err := ctx.Repo.Commit.SubTree(ctx.Repo.TreePath)
 	if err != nil {
 		ctx.NotFoundOrServerError("Repo.Commit.SubTree", git.IsErrNotExist, err)
@@ -148,6 +153,92 @@ func renderDirectory(ctx *context.Context, treeLink string) {
 		ctx.ServerError("GetCommitsInfo", err)
 		return
 	}
+
+
+	//fmt.Printf("%+v",ctx.Data)
+
+
+	// CAP info
+	iref, err := ctx.Repo.GitRepo.GoGitRepo().Reference(plumbing.ReferenceName("refs/notes/capinfo"),true)
+	if err != nil { 
+		fmt.Println("ref/notes/capinfo absent!")
+	} else {
+		fmt.Println("found ref/notes/capinfo")
+		// get capinfo commit 
+		info, err := ctx.Repo.GitRepo.GoGitRepo().CommitObject(iref.Hash())
+		if err == nil {
+			// get capinfo tree
+			infot, err := info.Tree();
+			if err == nil {
+				// check if there's capinfo note for the current commit
+				te, err := infot.FindEntry(ctx.Repo.Commit.ID.String())
+				if err == nil { // found
+					fmt.Printf("found capinfo entry for the current commit (%s)!",te.Hash.String())
+					// decode cap info
+					o, err := ctx.Repo.GitRepo.GoGitRepo().BlobObject(te.Hash)
+					if(err == nil) {
+						rdr, err := o.Reader();
+						if(err == nil) {
+							//var str interface{}
+							decoder := json.NewDecoder(rdr)
+							//decoder.UseNumber()
+							var str models.AnnotationStats
+							err = decoder.Decode(&str);
+							if(err == nil) {
+								fmt.Printf("\nCAP info:\n%+v\n",str)
+								//m := str.(map[string]interface{})
+								//fmt.Printf("%+v",m["Files"])
+
+								// translate into icon names
+								for k,v := range str.Files {
+									switch v.Status {
+									case "ok":
+										v.Status="check-filled"
+										str.Files[k]=v
+									case "error":
+										v.Status="alert2"
+										str.Files[k]=v
+									default:
+										v.Status="question"
+										str.Files[k]=v
+									}
+								}
+								
+								ctx.Data["CAP"]=str
+
+								tcells:=0
+								for _,v := range str.Datasets {
+									tcells+=v
+								}
+								ctx.Data["NCells"]=tcells
+								ctx.Data["NDatasets"]=len(str.Datasets)
+								ctx.Data["NTerms"]=len(str.Terms)
+								
+								//fmt.Printf("%+v\n",ctx.Data)
+							} else {
+								fmt.Printf("unable to decode CAP info")
+							}
+						} else {
+							fmt.Printf("unable to get CAP info blob reader")
+						}
+					} else {
+						fmt.Printf("unable to get CAP info blob")
+					}
+					
+					
+					
+				} else { // no capinfo for this commit
+					fmt.Println("no capinfo entry for the current commit")
+				}
+			} else {
+				fmt.Println("unable to get capinfo Tree",err);
+			}
+		} else {
+			fmt.Println("unable to get capinfo Commit",err);
+		}
+	}
+	
+	
 
 	// 3 for the extensions in exts[] in order
 	// the last one is for a readme that doesn't
@@ -365,6 +456,8 @@ func renderDirectory(ctx *context.Context, treeLink string) {
 		ctx.Data["CanAddFile"] = !ctx.Repo.Repository.IsArchived
 		ctx.Data["CanUploadFile"] = setting.Repository.Upload.Enabled && !ctx.Repo.Repository.IsArchived
 	}
+
+	fmt.Printf("Final context:\n%+v\n",ctx.Data)
 }
 
 func renderFile(ctx *context.Context, entry *git.TreeEntry, treeLink, rawLink string) {

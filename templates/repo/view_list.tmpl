@@ -31,12 +31,13 @@
 				</span>
 			</th>
 			<th class="text grey right age">{{if .LatestCommit.Author}}{{TimeSince .LatestCommit.Author.When $.Lang}}{{end}}</th>
+			<th class="text grey right age">CAP</th>
 		</tr>
 	</thead>
 	<tbody>
 		{{if .HasParentPath}}
 			<tr class="has-parent">
-				<td colspan="3">{{svg "octicon-reply" 16}}<a href="{{EscapePound .BranchLink}}{{.ParentPath}}">..</a></td>
+				<td colspan="4">{{svg "octicon-reply" 16}}<a href="{{EscapePound .BranchLink}}{{.ParentPath}}">..</a></td>
 			</tr>
 		{{end}}
 		{{range $item := .Files}}
@@ -76,12 +77,20 @@
 						</span>
 					</td>
 				{{end}}
-				<td class="message nine wide">
+
+				<td class="message seven wide">
 					<span class="truncate">
 						<a href="{{$.RepoLink}}/commit/{{$commit.ID}}" title="{{$commit.Summary}}">{{$commit.Summary | RenderEmoji}}</a>
 					</span>
 				</td>
 				<td class="text right age three wide">{{TimeSince $commit.Committer.When $.Lang}}</td>
+				<td class="text right two wide">
+				  {{if $.CAP}}
+				  <span class="truncate">
+				    {{svg (printf "octicon-%s" (index $.CAP.Files $entry.Name).Status) 16}}
+				  </span>
+				  {{end}}
+				</td>
 			</tr>
 		{{end}}
 	</tbody>
