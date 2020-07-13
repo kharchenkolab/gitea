@@ -61,6 +61,7 @@ require (
 	github.com/jmhodges/levigo v1.0.0 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20170619183022-cd60e84ee657
 	github.com/keybase/go-crypto v0.0.0-20200123153347-de78d2cb44f4
+	github.com/kharchenkolab/cap-annparser v0.0.0-20200713135254-ee6a2bebc97e
 	github.com/klauspost/compress v1.10.2
 	github.com/lafriks/xormstore v1.3.2
 	github.com/lib/pq v1.7.0

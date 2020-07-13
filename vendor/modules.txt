@@ -476,6 +476,9 @@ github.com/keybase/go-crypto/openpgp/errors
 github.com/keybase/go-crypto/openpgp/packet
 github.com/keybase/go-crypto/openpgp/s2k
 github.com/keybase/go-crypto/rsa
+# github.com/kharchenkolab/cap-annparser v0.0.0-20200713135254-ee6a2bebc97e
+## explicit
+github.com/kharchenkolab/cap-annparser/models
 # github.com/klauspost/compress v1.10.2
 ## explicit
 github.com/klauspost/compress/flate

@@ -29,6 +29,7 @@ import (
 	"code.gitea.io/gitea/modules/setting"
 
 	"github.com/go-git/go-git/v5/plumbing"
+	parsermodels "github.com/kharchenkolab/cap-annparser/models"
 	"encoding/json"
 )
 
@@ -182,7 +183,7 @@ func renderDirectory(ctx *context.Context, treeLink string) {
 							//var str interface{}
 							decoder := json.NewDecoder(rdr)
 							//decoder.UseNumber()
-							var str models.AnnotationStats
+							var str parsermodels.AnnotationStats
 							err = decoder.Decode(&str);
 							if(err == nil) {
 								fmt.Printf("\nCAP info:\n%+v\n",str)
