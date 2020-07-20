@@ -86,8 +86,10 @@
 				<td class="text right age three wide">{{TimeSince $commit.Committer.When $.Lang}}</td>
 				<td class="text right two wide">
 				  {{if $.CAP}}
-				  <span class="truncate">
-				    {{svg (printf "octicon-%s" (index $.CAP.Files $entry.Name).Status) 16}}
+				    {{$status := (index $.CAP.Files $entry.Name).Status}}
+				    {{$message := (index $.CAP.Files $entry.Name).Message}}
+				  <span class="truncate" {{if eq $status "check-filled"}}style="fill:#197514"{{else}}style="fill:#d6251c"{{end}}>
+				    {{svg (printf "octicon-%s" $status) 16}}
 				  </span>
 				  {{end}}
 				</td>
