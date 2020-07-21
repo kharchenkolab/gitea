@@ -1,4 +1,4 @@
-<div class="ui segments repository-summary" style="background:#d7f5df;">
+<div class="ui segments" style="background:#d7f5df;">
 	<div class="ui segment sub-menu repository-menu" style="background:#d7f5df;">
 		<div class="ui two horizontal center link list">
 			<div class="item">
@@ -11,5 +11,11 @@
 				<span class="ui active">{{svg "dot " 16}} <b>{{.NCells}} cells</b></span>
 			</div>
 		</div>
+		{{if ge .NCells 0}}
+		   <svg id="cellbar" height="30" width="100%" xmlns="http://www.w3.org/2000/svg"/>
+		   <script type="text/javascript">var fullInfo = {{.FullInfo}}</script>
+                   <script src="https://d3js.org/d3.v5.min.js"></script>
+		   <script src="{{StaticUrlPrefix}}/cap/js/cellbar.js"></script>
+                {{end}}
 	</div>
 </div>

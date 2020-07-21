@@ -214,6 +214,7 @@ func renderDirectory(ctx *context.Context, treeLink string) {
 								ctx.Data["NCells"]=tcells
 								ctx.Data["NDatasets"]=len(str.Datasets)
 								ctx.Data["NTerms"]=len(str.Terms)
+								ctx.Data["FullInfo"]=str;
 								
 								//fmt.Printf("%+v\n",ctx.Data)
 							} else {
