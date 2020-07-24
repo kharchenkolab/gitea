@@ -88,7 +88,7 @@
 				  {{if $.CAP}}
 				    {{$status := (index $.CAP.Files $entry.Name).Status}}
 				    {{$message := (index $.CAP.Files $entry.Name).Message}}
-				  <span class="truncate" {{if eq $status "check-filled"}}style="fill:#197514"{{else}}style="fill:#d6251c"{{end}} title="{{$message}}">
+				  <span class="truncate poping up" {{if eq $status "check-filled"}}style="fill:#197514"{{else}}style="fill:#d6251c"{{end}} data-content="{{$message}}">
 				    {{svg (printf "octicon-%s" $status) 16}}
 				  </span>
 				  {{end}}
