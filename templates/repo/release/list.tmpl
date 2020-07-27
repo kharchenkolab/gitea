@@ -80,6 +80,9 @@
 										<ul class="list">
 											{{if $.Permission.CanRead $.UnitTypeCode}}
 												<li>
+													<a href="{{$.RepoLink}}/archive/{{.TagName | EscapePound}}.zip" rel="nofollow"><strong>{{svg "octicon-file-zip" 16}} {{$.i18n.Tr "repo.release.normalized_data"}} (ZIP)</strong></a>
+												</li>
+												<li>
 													<a href="{{$.RepoLink}}/archive/{{.TagName | EscapePound}}.zip" rel="nofollow"><strong>{{svg "octicon-file-zip" 16}} {{$.i18n.Tr "repo.release.source_code"}} (ZIP)</strong></a>
 												</li>
 												<li>
