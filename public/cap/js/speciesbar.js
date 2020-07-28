@@ -5,7 +5,7 @@ var div = d3.select("body").append("div")
     .attr("class", "tooltip")				
     .style("opacity", 0);
 
-var data = fullInfo.Terms
+var data = fullInfo.Species
 
 var svg = d3.select("#cellbar"),
     svgSize=svg.node().getBoundingClientRect(),
@@ -22,7 +22,7 @@ var y = d3.scaleBand()
 var x = d3.scaleLinear()	
     .rangeRound([0, width]);	
 
-var keys = Object.keys(data) // terms
+var keys = Object.keys(data) // species
 var z = d3.scaleOrdinal().domain(keys).range(d3.schemeSet3)
 
 for (i = 0, t = 0; i < keys.length; i++) {
