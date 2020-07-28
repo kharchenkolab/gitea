@@ -57,6 +57,19 @@ func linesBytesCount(s []byte) int {
 	return n
 }
 
+func removeDuplicateSpecies(intSlice []string) []string { 
+    keys := make(map[string]bool) 
+    list := make([]string, 0)
+  
+    for _, entry := range intSlice { 
+        if _, value := keys[entry]; !value { 
+            keys[entry] = true
+            list = append(list, entry) 
+        } 
+    } 
+    return list 
+} 
+
 // FIXME: There has to be a more efficient way of doing this
 func getReadmeFileFromPath(commit *git.Commit, treePath string) (*namedBlob, error) {
 	tree, err := commit.SubTree(treePath)
@@ -211,9 +224,17 @@ func renderDirectory(ctx *context.Context, treeLink string) {
 								for _,v := range str.Datasets {
 									tcells+=v
 								}
+								
+								total_species := make([]string, 0)
+								for k, v := range str.Species { 
+									total_species = append(total_species, str.Species[k])
+								}
+								total_species = removeDuplicateSpecies(total_species)
+
 								ctx.Data["NCells"]=tcells
 								ctx.Data["NDatasets"]=len(str.Datasets)
 								ctx.Data["NTerms"]=len(str.Terms)
+								ctx.Data["NSpecies"] = len(total_species)
 								ctx.Data["FullInfo"]=str;
 								
 								//fmt.Printf("%+v\n",ctx.Data)

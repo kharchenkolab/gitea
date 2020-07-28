@@ -10,6 +10,9 @@
 			<div class="item">
 				<span class="ui active">{{svg "dot " 16}} <b>{{.NCells}} cells</b></span>
 			</div>
+			<div class="item">
+				<span class="ui active">{{svg "dot " 16}} <b>{{.NSpecies}} species</b></span>
+			</div>
 		{{if ge .NCells 0}}
 		        <div class="ui basic jump dropdown icon poping up" data-content="Download Normalized Annotations" data-variation="tiny inverted" data-position="top right" tabindex="0">
 				<i class="download icon"></i>
@@ -25,6 +28,10 @@
 		   <script type="text/javascript">var fullInfo = {{.FullInfo}}</script>
                    <script src="https://d3js.org/d3.v5.min.js"></script>
 		   <script src="{{StaticUrlPrefix}}/cap/js/cellbar.js"></script>
+		   <svg id="speciesbar" height="30" width="100%" xmlns="http://www.w3.org/2000/svg"/>
+		   <script type="text/javascript">var fullInfo = {{.FullInfo}}</script>
+                   <script src="https://d3js.org/d3.v5.min.js"></script>
+		   <script src="{{StaticUrlPrefix}}/cap/js/speciesbar.js"></script>
                 {{end}}
 	</div>
 </div>
